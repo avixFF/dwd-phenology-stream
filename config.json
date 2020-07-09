@@ -1,0 +1,70 @@
+{
+  "streams": [
+    {
+      "type": "dwd-phenology",
+      "stations": {
+        "field_map": {
+          "Stations_id": "id",
+          "Stationsname": "name",
+          "geograph.Breite": "latitude",
+          "geograph.Laenge": "longitude",
+          "Naturraumgruppe_Code": "natural_region_group_code",
+          "Naturraumgruppe": "natural_region_group",
+          "Naturraum_Code": "natural_region_code",
+          "Naturraum": "natural_region",
+          "Stationshoehe": "height",
+          "Datum Stationsaufloesung": "date",
+          "Bundesland": "state"
+        },
+        "url": "https://opendata.dwd.de/climate_environment/CDC/help/PH_Beschreibung_Phaenologie_Stationen_Sofortmelder.txt"
+      },
+      "phases": {
+        "field_map": {
+          "Phase_ID": "id",
+          "Phase": "name_german",
+          "Phase_englisch": "name_english"
+        },
+        "url": "https://opendata.dwd.de/climate_environment/CDC/help/PH_Beschreibung_Phase.txt"
+      },
+      "plants": {
+        "field_map": {
+          "Objekt_ID": "id",
+          "Objekt": "name_german",
+          "Objekt_englisch": "name_english",
+          "Objekt_latein": "name_latin"
+        },
+        "url": "https://opendata.dwd.de/climate_environment/CDC/help/PH_Beschreibung_Pflanze.txt"
+      },
+      "field_map": {
+        "stations_id": "station_id",
+        "referenzjahr": "year",
+        "qualitaetsniveau": "data_quality_bit",
+        "objekt_id": "object_id",
+        "phase_id": "phase_id",
+        "eintrittsdatum": "date",
+        "eintrittsdatum_qb": "date_quality_bit",
+        "jultag": "day_of_year"
+      },
+      "sources": [
+        {
+          "type": "index",
+          "name": "Agriculture crops",
+          "prefix": "PH_Sofortmelder_Landwirtschaft_Kulturpflanze",
+          "url": "https://opendata.dwd.de/climate_environment/CDC/observations_germany/phenology/immediate_reporters/crops/recent/"
+        },
+        {
+          "type": "index",
+          "name": "Fruits",
+          "prefix": "PH_Sofortmelder_Obst",
+          "url": "https://opendata.dwd.de/climate_environment/CDC/observations_germany/phenology/immediate_reporters/fruit/recent/"
+        },
+        {
+          "type": "index",
+          "name": "Wild plants",
+          "prefix": "PH_Sofortmelder_Wildwachsende_Pflanze",
+          "url": "https://opendata.dwd.de/climate_environment/CDC/observations_germany/phenology/immediate_reporters/wild/recent/"
+        }
+      ]
+    }
+  ]
+}
