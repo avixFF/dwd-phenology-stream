@@ -51,8 +51,6 @@ class Stream(BaseStream):
         self._plants = \
             self._plants.where(pd.notnull(self._plants), None)
 
-        # self._sources = []
-
         # Stations
 
         dwd.Station.insert_many(
@@ -164,8 +162,6 @@ class Stream(BaseStream):
                         aggregate = df
                     else:
                         aggregate = pd.concat([aggregate, df])
-
-                # self._sources.append(source)
             else:
                 raise Exception(f'Unknown source type "{source_type}"')
 
