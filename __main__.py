@@ -18,9 +18,9 @@ parser.add_argument(
 )
 parser.add_argument(
     '-m', '--migrate',
-    const=True,
-    action='store_const',
-    default=False,
+    type=str,
+    nargs='+',
+    default=[],
     help='migrate database'
 )
 parser.add_argument(
@@ -28,14 +28,27 @@ parser.add_argument(
     const=True,
     action='store_const',
     default=False,
-    help='re-run all database migrations'
+    help='re-run migration'
+)
+parser.add_argument(
+    '--reverse',
+    const=True,
+    action='store_const',
+    default=False,
+    help='reverse migration'
 )
 
 args = parser.parse_args()
 
-if args.migrate:
+if len(args.migrate) > 0:
     from database.migrate import run as migrate
-    migrate(fresh=args.fresh)
+
+    if args.reverse:
+        args.migrate.reverse()
+
+    for migration in args.migrate:
+        migrate(migration, fresh=args.fresh, reverse=args.reverse)
+
     exit()
 
 if args.clear_cache and os.path.exists('cache'):
