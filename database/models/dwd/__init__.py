@@ -52,6 +52,7 @@ class Plant(BaseModel):
         table_name = 'dwd_plants'
 
     id = IntegerField(primary_key=True)
+    kind = CharField(null=True)
 
 
 class PlantName(BaseModel):

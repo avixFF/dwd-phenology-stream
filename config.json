@@ -48,19 +48,19 @@
       "sources": [
         {
           "type": "index",
-          "name": "Agriculture crops",
+          "kind": "crop",
           "prefix": "PH_Sofortmelder_Landwirtschaft_Kulturpflanze",
           "url": "https://opendata.dwd.de/climate_environment/CDC/observations_germany/phenology/immediate_reporters/crops/recent/"
         },
         {
           "type": "index",
-          "name": "Fruits",
+          "kind": "fruit",
           "prefix": "PH_Sofortmelder_Obst",
           "url": "https://opendata.dwd.de/climate_environment/CDC/observations_germany/phenology/immediate_reporters/fruit/recent/"
         },
         {
           "type": "index",
-          "name": "Wild plants",
+          "kind": "wild",
           "prefix": "PH_Sofortmelder_Wildwachsende_Pflanze",
           "url": "https://opendata.dwd.de/climate_environment/CDC/observations_germany/phenology/immediate_reporters/wild/recent/"
         }

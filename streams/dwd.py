@@ -69,9 +69,9 @@ class Stream(BaseStream):
 
         for item in stations:
             dwd.Station.insert(item).on_conflict(
-            preserve=[dwd.Station.id],
+                preserve=[dwd.Station.id],
                 update=_.omit(item, 'id')
-        ).execute()
+            ).execute()
 
         print('Updated: Stations')
 
@@ -83,19 +83,19 @@ class Stream(BaseStream):
             dwd.Phase.insert(item).on_conflict(
                 preserve=[dwd.Phase.id],
                 update=_.omit(item, 'id')
-        ).execute()
+            ).execute()
 
         print('Updated: Phases reference')
 
         phase_names = self._phases.rename(columns={
-                'id': 'phase_id',
-            }).to_dict('records')
+            'id': 'phase_id',
+        }).to_dict('records')
 
         for item in phase_names:
             dwd.PhaseName.insert(item).on_conflict(
-            preserve=[dwd.PhaseName.phase_id],
+                preserve=[dwd.PhaseName.phase_id],
                 update=_.omit(item, 'phase_id')
-        ).execute()
+            ).execute()
 
         print('Updated: Phase names')
 
@@ -107,19 +107,19 @@ class Stream(BaseStream):
             dwd.Plant.insert(item).on_conflict(
                 preserve=[dwd.Plant.id],
                 update=_.omit(item, 'id')
-        ).execute()
+            ).execute()
 
         print('Updated: Plants reference')
 
         plant_names = self._plants.rename(columns={
-                'id': 'plant_id',
-            }).to_dict('records')
+            'id': 'plant_id',
+        }).to_dict('records')
 
         for item in plant_names:
             dwd.PlantName.insert(item).on_conflict(
-            preserve=[dwd.PlantName.plant_id],
+                preserve=[dwd.PlantName.plant_id],
                 update=_.omit(item, 'plant_id')
-        ).execute()
+            ).execute()
 
         print('Updated: Plants names')
 
@@ -135,6 +135,7 @@ class Stream(BaseStream):
                 url = source.get('url')
                 response = requests.get(url)
                 soup = BeautifulSoup(response.text, 'html.parser')
+                kind = source.get('kind', 'wild')
 
                 files = []
 
@@ -153,6 +154,8 @@ class Stream(BaseStream):
                         'cache': 3600
                     })
 
+                    df['kind'] = kind
+
                     print(f'fetched {df.shape[0]} rows')
 
                     source['data_frames'].append(df)
@@ -169,6 +172,27 @@ class Stream(BaseStream):
         aggregate = aggregate.rename(
             columns=_.get(self._config, 'field_map', {})
         )
+
+        # Update plant kinds from newly fetched data
+
+        plant_kinds = aggregate.drop_duplicates(
+            ['object_id']
+        )[['object_id', 'kind']].rename(columns={
+            'object_id': 'id',
+        }).to_dict('records')
+
+        print('Updating plant kinds...')
+
+        for item in plant_kinds:
+
+            dwd.Plant.insert(item).on_conflict(
+                preserve=[dwd.Plant.id],
+                update=_.omit(_.find(plant_kinds, {'id': item['id']}), 'id')
+            ).execute()
+
+        # Drop kind column in order to comply with record format
+
+        aggregate = aggregate.drop(['kind'], axis=1)
 
         aggregate.dropna(inplace=True, subset=['date'])
 
