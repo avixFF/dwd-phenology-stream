@@ -21,6 +21,8 @@ class Stream(BaseStream):
 
         cache_duration = 3600 * 24
 
+        # Stations
+
         self._stations = self._loader.load({
             'url': _.get(self._config, 'stations.url'),
             'cache': cache_duration
@@ -30,6 +32,8 @@ class Stream(BaseStream):
         self._stations.columns = map(str.lower, self._stations.columns)
         self._stations = \
             self._stations.where(pd.notnull(self._stations), None)
+
+        # Phases
 
         self._phases = self._loader.load({
             'url': _.get(self._config, 'phases.url'),
@@ -41,6 +45,8 @@ class Stream(BaseStream):
         self._phases = \
             self._phases.where(pd.notnull(self._phases), None)
 
+        # Plants
+
         self._plants = self._loader.load({
             'url': _.get(self._config, 'plants.url'),
             'cache': cache_duration
@@ -51,73 +57,68 @@ class Stream(BaseStream):
         self._plants = \
             self._plants.where(pd.notnull(self._plants), None)
 
+        for column in self._plants.columns:
+            if column.startswith('name_'):
+                self._plants[column] = self._plants[column].apply(
+                    lambda x: None if x.startswith('--') else x
+                )
+
         # Stations
 
-        dwd.Station.insert_many(
-            self._stations.to_dict('records')
-        ).on_conflict(
+        stations = self._stations.to_dict('records')
+
+        for item in stations:
+            dwd.Station.insert(item).on_conflict(
             preserve=[dwd.Station.id],
-            update={
-                dwd.Station.name: dwd.Station.name,
-                dwd.Station.latitude: dwd.Station.latitude,
-                dwd.Station.longitude: dwd.Station.longitude,
-                dwd.Station.height: dwd.Station.height,
-                dwd.Station.natural_region_group_code: dwd.Station.natural_region_group_code,
-                dwd.Station.natural_region_group: dwd.Station.natural_region_group,
-                dwd.Station.natural_region_code: dwd.Station.natural_region_code,
-                dwd.Station.natural_region: dwd.Station.natural_region,
-                dwd.Station.date: dwd.Station.date,
-                dwd.Station.state: dwd.Station.state,
-            }
+                update=_.omit(item, 'id')
         ).execute()
 
         print('Updated: Stations')
 
         # Phases
 
-        dwd.Phase.insert_many(
-            self._phases.loc[:, ['id']].to_dict('records')
-        ).on_conflict(
-            preserve=[dwd.Phase.id]
+        phases = self._phases.loc[:, ['id']].to_dict('records')
+
+        for item in phases:
+            dwd.Phase.insert(item).on_conflict(
+                preserve=[dwd.Phase.id],
+                update=_.omit(item, 'id')
         ).execute()
 
         print('Updated: Phases reference')
 
-        dwd.PhaseName.insert_many(
-            self._phases.rename(columns={
+        phase_names = self._phases.rename(columns={
                 'id': 'phase_id',
             }).to_dict('records')
-        ).on_conflict(
+
+        for item in phase_names:
+            dwd.PhaseName.insert(item).on_conflict(
             preserve=[dwd.PhaseName.phase_id],
-            update={
-                dwd.PhaseName.name_german: dwd.PhaseName.name_german,
-                dwd.PhaseName.name_english: dwd.PhaseName.name_english,
-            }
+                update=_.omit(item, 'phase_id')
         ).execute()
 
         print('Updated: Phase names')
 
         # Plants
 
-        dwd.Plant.insert_many(
-            self._plants.loc[:, ['id']].to_dict('records')
-        ).on_conflict(
-            preserve=[dwd.Plant.id]
+        plants = self._plants.loc[:, ['id']].to_dict('records')
+
+        for item in plants:
+            dwd.Plant.insert(item).on_conflict(
+                preserve=[dwd.Plant.id],
+                update=_.omit(item, 'id')
         ).execute()
 
         print('Updated: Plants reference')
 
-        dwd.PlantName.insert_many(
-            self._plants.rename(columns={
+        plant_names = self._plants.rename(columns={
                 'id': 'plant_id',
             }).to_dict('records')
-        ).on_conflict(
+
+        for item in plant_names:
+            dwd.PlantName.insert(item).on_conflict(
             preserve=[dwd.PlantName.plant_id],
-            update={
-                dwd.PlantName.name_german: dwd.PlantName.name_german,
-                dwd.PlantName.name_english: dwd.PlantName.name_english,
-                dwd.PlantName.name_latin: dwd.PlantName.name_latin,
-            }
+                update=_.omit(item, 'plant_id')
         ).execute()
 
         print('Updated: Plants names')
