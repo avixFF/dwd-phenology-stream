@@ -52,7 +52,7 @@ class Plant(BaseModel):
         table_name = 'dwd_plants'
 
     id = IntegerField(primary_key=True)
-    kind = CharField(null=True)
+    kind = CharField(null=True, index=True)
 
 
 class PlantName(BaseModel):
@@ -81,11 +81,11 @@ class Record(BaseModel):
         )
         table_name = 'dwd_records'
 
-    station_id = IntegerField()
-    year = IntegerField()
-    data_quality_bit = IntegerField()
-    object_id = IntegerField()
-    phase_id = IntegerField()
-    date = DateField()
-    date_quality_bit = IntegerField()
-    day_of_year = IntegerField()
+    station_id = IntegerField(index=True)
+    year = IntegerField(index=True)
+    data_quality_bit = IntegerField(index=True)
+    object_id = IntegerField(index=True)
+    phase_id = IntegerField(index=True)
+    date = DateField(index=True)
+    date_quality_bit = IntegerField(index=True)
+    day_of_year = IntegerField(index=True)
