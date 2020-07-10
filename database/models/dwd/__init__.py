@@ -30,6 +30,7 @@ class Phase(BaseModel):
         table_name = 'dwd_phases'
 
     id = IntegerField(primary_key=True)
+    weight = IntegerField(default=0)
 
 
 class PhaseName(BaseModel):
