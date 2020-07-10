@@ -1,5 +1,5 @@
 from peewee import *
-from .. import BaseModel
+from database.models import BaseModel
 
 
 class Station(BaseModel):
@@ -9,37 +9,34 @@ class Station(BaseModel):
     class Meta:
         table_name = 'dwd_stations'
 
-    id = IntegerField(primary_key=True)  # Stations_id
-    name = CharField(null=True, index=True)  # Stationsname
-    latitude = FloatField(index=True)  # geograph.Breite
-    longitude = FloatField(index=True)  # geograph.Laenge
-    height = FloatField(index=True)  # Stationshoehe
-    natural_region_group_code = \
-        IntegerField(index=True)  # Naturraumgruppe_Code
-    natural_region_group = CharField(index=True)  # Naturraumgruppe
-    natural_region_code = IntegerField(index=True)  # Naturraum_Code
-    natural_region = CharField(index=True)  # Naturraum
-    date = \
-        DateField(null=True, index=True,
-                  formats=['%d.%m.%Y'])  # Datum Stationsaufloesung
-    state = CharField(index=True)  # Bundesland
+    id = IntegerField(primary_key=True)
+    name = CharField(null=True, index=True)
+    latitude = FloatField(index=True)
+    longitude = FloatField(index=True)
+    height = FloatField(index=True)
+    natural_region_group_code = IntegerField(index=True)
+    natural_region_group = CharField(index=True)
+    natural_region_code = IntegerField(index=True)
+    natural_region = CharField(index=True)
+    date = DateField(null=True, index=True, formats=['%d.%m.%Y'])
+    state = CharField(index=True)
 
 
 class Phase(BaseModel):
+    '''
+    Part of schema for CSV file: https://opendata.dwd.de/climate_environment/CDC/help/PH_Beschreibung_Phase.txt
+    '''
     class Meta:
         table_name = 'dwd_phases'
 
     id = IntegerField(primary_key=True)
-    # name = TextField(null=True, index=True)
-    # latitude = FloatField(index=True)
-    # longitude = FloatField(index=True)
-    # naturraum = TextField(null=True, index=True)
-    # state = TextField(null=True, index=True)
 
 
 class PhaseName(BaseModel):
+    '''
+    Part of schema for CSV file: https://opendata.dwd.de/climate_environment/CDC/help/PH_Beschreibung_Phase.txt
+    '''
     class Meta:
-        # primary_key = False
         table_name = 'dwd_phase_names'
 
     phase_id = ForeignKeyField(Phase, primary_key=True)
@@ -48,6 +45,9 @@ class PhaseName(BaseModel):
 
 
 class Plant(BaseModel):
+    '''
+    Part of schema for CSV file: https://opendata.dwd.de/climate_environment/CDC/help/PH_Beschreibung_Pflanze.txt
+    '''
     class Meta:
         table_name = 'dwd_plants'
 
@@ -55,8 +55,10 @@ class Plant(BaseModel):
 
 
 class PlantName(BaseModel):
+    '''
+    Part of schema for CSV file: https://opendata.dwd.de/climate_environment/CDC/help/PH_Beschreibung_Pflanze.txt
+    '''
     class Meta:
-        # primary_key = False
         table_name = 'dwd_plant_names'
 
     plant_id = ForeignKeyField(Plant, primary_key=True)
@@ -66,6 +68,9 @@ class PlantName(BaseModel):
 
 
 class Record(BaseModel):
+    '''
+    Schema for CSV file: https://opendata.dwd.de/climate_environment/CDC/help/PH_Beschreibung_Pflanze.txt
+    '''
     class Meta:
         primary_key = CompositeKey(
             'station_id',
