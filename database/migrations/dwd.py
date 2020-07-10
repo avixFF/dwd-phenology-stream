@@ -29,3 +29,19 @@ class AddPlantKind(BaseMigration):
         migrate(
             self.migrator.drop_column(Plant._meta.table_name, 'kind'),
         )
+
+
+class AddPhaseWeight(BaseMigration):
+
+    def up(self):
+        migrate(
+            self.migrator.add_column(
+                Phase._meta.table_name, 'weight', IntegerField(default=0)
+            ),
+        )
+
+    def down(self):
+        migrate(
+            self.migrator.drop_column(Phase._meta.table_name, 'weight'),
+        )
+
