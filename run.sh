@@ -19,9 +19,9 @@ $pipenv run python . >> $log_file
 echo "Generating cache..." >> $log_file
 
 if [ -z $MYSQL_PASSWORD ]; then
-    mysql -u $MYSQL_USERNAME $MYSQL_DATABASE < database/dwd/generate_cache.sql
+    mysql -u $MYSQL_USERNAME $MYSQL_DATABASE < "$script_dir/database/dwd/generate_cache.sql"
 else
-    mysql -u $MYSQL_USERNAME -p$MYSQL_PASSWORD $MYSQL_DATABASE < database/dwd/generate_cache.sql
+    mysql -u $MYSQL_USERNAME -p$MYSQL_PASSWORD $MYSQL_DATABASE < "$script_dir/database/dwd/generate_cache.sql"
 fi
 
 echo "Done" >> $log_file
