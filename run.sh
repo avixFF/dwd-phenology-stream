@@ -24,4 +24,4 @@ else
     mysql -u $MYSQL_USERNAME -p$MYSQL_PASSWORD $MYSQL_DATABASE < database/dwd/generate_cache.sql
 fi
 
-echo "Done"
+echo "Done" >> $log_file
