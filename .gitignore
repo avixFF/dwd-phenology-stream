@@ -2,4 +2,4 @@
 cache
 .env
 dumps/
-run.log
+cron.log
