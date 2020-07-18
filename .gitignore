@@ -1,4 +1,6 @@
 .vscode
+*.icloud
+.DS_Store
 cache
 .env
 dumps/
