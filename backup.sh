@@ -1,11 +1,13 @@
 #!/bin/bash
 
+script_dir=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
+cd "$script_dir"
+
 # import .env
 if [ -f .env ]; then
     export $(egrep -v '^#' .env | xargs)
 fi
 
-script_dir=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
 timestamp=$(date +%Y%m%d%H%M%S)
 dir="$script_dir/database/dumps"
 num_backups=5

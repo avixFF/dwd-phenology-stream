@@ -1,11 +1,12 @@
 #!/bin/bash
 
+script_dir=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
+cd "$script_dir"
+
 # import .env
 if [ -f .env ]; then
     export $(egrep -v '^#' .env | xargs)
 fi
-
-script_dir=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
 
 server="$MYSQL_BACKUP_USER@$MYSQL_BACKUP_HOST"
 
