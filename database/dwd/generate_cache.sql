@@ -5,13 +5,15 @@ create table dwd_records_cache_fruits
     key `lat` (`lat`),
     key `lon` (`lon`),
     key `station` (`station`),
+    key `state` (`state`),
     key `date` (`date`)
 )
-select avg(dwd_phases.weight) as "weight",
-       dwd_stations.longitude as "lon",
-       dwd_stations.latitude  as "lat",
-       dwd_stations.name      as "station",
-       dwd_records.date       as "date"
+select avg(dwd_phases.weight)                                    as "weight",
+       dwd_stations.longitude                                    as "lon",
+       dwd_stations.latitude                                     as "lat",
+       dwd_stations.name                                         as "station",
+       substring_index(group_concat(dwd_stations.state), ',', 1) as "state",
+       dwd_records.date                                          as "date"
 from dwd_records
          join dwd_plants on dwd_plants.id = dwd_records.object_id
          join dwd_phases on dwd_phases.id = dwd_records.phase_id
@@ -26,13 +28,15 @@ create table dwd_records_cache_crops
     key `lat` (`lat`),
     key `lon` (`lon`),
     key `station` (`station`),
+    key `state` (`state`),
     key `date` (`date`)
 )
-select avg(dwd_phases.weight) as "weight",
-       dwd_stations.longitude as "lon",
-       dwd_stations.latitude  as "lat",
-       dwd_stations.name      as "station",
-       dwd_records.date       as "date"
+select avg(dwd_phases.weight)                                    as "weight",
+       dwd_stations.longitude                                    as "lon",
+       dwd_stations.latitude                                     as "lat",
+       dwd_stations.name                                         as "station",
+       substring_index(group_concat(dwd_stations.state), ',', 1) as "state",
+       dwd_records.date                                          as "date"
 from dwd_records
          join dwd_plants on dwd_plants.id = dwd_records.object_id
          join dwd_phases on dwd_phases.id = dwd_records.phase_id
@@ -47,13 +51,15 @@ create table dwd_records_cache_wild
     key `lat` (`lat`),
     key `lon` (`lon`),
     key `station` (`station`),
+    key `state` (`state`),
     key `date` (`date`)
 )
-select avg(dwd_phases.weight) as "weight",
-       dwd_stations.longitude as "lon",
-       dwd_stations.latitude  as "lat",
-       dwd_stations.name      as "station",
-       dwd_records.date       as "date"
+select avg(dwd_phases.weight)                                    as "weight",
+       dwd_stations.longitude                                    as "lon",
+       dwd_stations.latitude                                     as "lat",
+       dwd_stations.name                                         as "station",
+       substring_index(group_concat(dwd_stations.state), ',', 1) as "state",
+       dwd_records.date                                          as "date"
 from dwd_records
          join dwd_plants on dwd_plants.id = dwd_records.object_id
          join dwd_phases on dwd_phases.id = dwd_records.phase_id
