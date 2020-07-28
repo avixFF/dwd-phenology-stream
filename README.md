@@ -1,3 +1,5 @@
+![](https://github.com/lexuzieel/dwd-phenology-stream/raw/master/data/demo.gif)
+
 # Installation
 
 - Clone the repository
