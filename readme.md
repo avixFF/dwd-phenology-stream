@@ -34,18 +34,3 @@ Parameters:
 - [DataGrip](https://www.jetbrains.com/datagrip/)
 
 - [Wheat phenology (picture example)](https://www.nature.com/articles/s41437-020-0320-1)
-
-# Methodology
-
-## Phase mapping
-
-Each relevant phase is assigned a weight, denoting "ripeness" of the phase.
-This will make it possible to compare phases between each other, moving away from textual representation.
-
-Example for common fruit phenological phases:
-
-| Phase name                               | Weight |
-|------------------------------------------|:------:|
-| fruit ripe for picking                   | 3      |
-| end of flowering in the observation area | 2      |
-| beginning of flowering                   | 1      |
