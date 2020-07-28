@@ -1,3 +1,13 @@
+# Installation
+
+- Clone the repository
+- Initialize pipenv repository by running `pipenv install` and then get into virtual environment by running `pipenv shell`
+- Setup MySQL database and user with permissions to insert data and edit schema (for migrations and cache regeneration)
+- Copy `.env.example` to `.env` and update values relevant to your database configuration
+- Migrate database schema by running `pipenv run python . --migrate database.migrations.dwd.CreateTables`
+- Optionally setup a cron job to run `run.sh` and `backup.sh` periodically
+  - Old backups are removed automatically, only five most recent are left
+
 # Migration
 
 Migrations are located in `database/migrations` directory. In order to launch a migration, pass at least one fully-qualified migration class name using `migrate` argument.
