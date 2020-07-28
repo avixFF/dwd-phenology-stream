@@ -5,3 +5,6 @@ cache
 .env
 dumps/
 cron.log
+.venv2
+var/
+out/
