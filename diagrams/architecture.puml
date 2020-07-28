@@ -1,0 +1,37 @@
+@startuml diagram
+skinparam linetype ortho
+
+interface Loader {
+    + load(options)
+}
+
+class CsvLoader {
+    - delimiter
+    - cache_dir
+    - eor_mode
+    - writeCache(data, key)
+    - readCache(key)
+    - getHash(url)
+    - cache(url, duration)
+}
+
+Loader <|-- CsvLoader
+
+abstract Stream {
+    - config
+    + {static} make(stream_type, config)
+    + fetch()
+}
+
+class DwdStream {
+    - loader
+    - stations
+    - phases
+    - plants
+}
+
+Stream <|-- DwdStream
+
+DwdStream -* CsvLoader
+
+@enduml

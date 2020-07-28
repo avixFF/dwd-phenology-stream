@@ -1,0 +1,98 @@
+@startuml diagram
+skinparam componentStyle uml1
+
+digraph dfd {
+    ' stream [label="Stream"]
+
+    dwd_cache [label="Local file cache" shape=box]
+
+    dwd_cache -> dwd_loader
+    dwd_loader -> dwd_cache
+
+    ' subgraph cluster_streams {
+    '     label = "Streams"
+
+        ' subgraph cluster_generic_stream {
+        '     label = "Generic stream"
+
+        '     generic_stream_inputs [label="Inputs"]
+        '     abstract_loader [label="Abstract loader" shape=Mrecord]
+
+        '     generic_stream_inputs -> abstract_loader
+        ' }
+
+        ' subgraph cluster_dwd_stream {
+        '     label = "dwd-phenology"
+
+            dwd_stations [label="Stations"]
+            dwd_phases [label="Phases"]
+            dwd_plants [label="Plants"]
+
+            dwd_loader [label="CsvLoader" shape=Mrecord]
+
+            dwd_stations -> dwd_loader
+            dwd_phases -> dwd_loader
+            dwd_plants -> dwd_loader
+
+            subgraph cluster_dwd_stream_sources {
+                label = "Immediate reporters records"
+
+                dwd_source1 [label="Crops"]
+                dwd_source2 [label="Fruits"]
+                dwd_source3 [label="Wild plants"]
+            }
+
+            dwd_source1 -> dwd_loader
+            dwd_source2 -> dwd_loader
+            dwd_source3 -> dwd_loader
+        ' }
+
+    ' }
+
+    dwd_source [label="opendata.dwd.de" shape=parallelogram]
+
+    dwd_source -> dwd_plants
+    dwd_source -> dwd_phases
+    dwd_source -> dwd_stations
+    dwd_source -> dwd_source1
+    dwd_source -> dwd_source2
+    dwd_source -> dwd_source3
+
+    orm [label="ORM" shape=Mrecord]
+
+    subgraph cluster_database {
+        label = "Database tables"
+
+        ' subgraph cluster_dwd_tables {
+        '     label = "dwd-phenology tables"
+
+            dwd_table_stations [label="stations"]
+            dwd_table_phases [label="phases"]
+            dwd_table_plants [label="plants"]
+            dwd_table_records [label="records"]
+        ' }
+
+        ' stream_source_table [label="<stream source table>"]
+    }
+
+    dwd_loader -> orm
+    ' abstract_loader -> orm
+    orm -> dwd_table_stations
+    orm -> dwd_table_phases
+    orm -> dwd_table_plants
+    orm -> dwd_table_records
+    ' orm -> stream_source_table
+
+    views [label="Materialized views" shape=Mrecord]
+
+    dwd_table_stations -> views
+    dwd_table_phases -> views
+    dwd_table_plants -> views
+    dwd_table_records -> views
+
+    grafana [label="Grafana dashboard panels" shape=Mrecord]
+
+    views -> grafana
+}
+
+@enduml

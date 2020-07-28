@@ -1,0 +1,112 @@
+@startuml normalization
+object dwd_stations {
+    **<PK> id** : int
+    **name** : string
+    **latitude** : float
+    **longitude** : float
+    **date** : date
+    **state** : string
+}
+object dwd_plants {
+    **<PK> id** : int
+    **kind** = (crops, fruit, wild)
+}
+object dwd_plant_names {
+    **<PK> plant_id** : int
+    **name_german** : string
+    **name_english** : string
+    **name_latin** : string
+}
+object dwd_phases {
+    **<PK> id** : int
+    **weight** : int
+}
+object dwd_phase_names {
+    **<PK> phase_id** : int
+    **name_german** : string
+    **name_english** : string
+}
+object dwd_records {
+    **<FK> station_id** : int
+    **<FK> object_id** : int
+    **<FK> phase_id** : int
+    **date** : date
+}
+
+dwd_phases --> dwd_phase_names : id:phase_id
+dwd_plants --> dwd_plant_names : id:plant_id
+
+dwd_phases --> dwd_records : id:phase_id
+dwd_plants --> dwd_records : id:object_id
+dwd_stations --> dwd_records : id:station_id
+
+@enduml
+
+@startuml cache
+object dwd_stations {
+    **<PK> id** : int
+    **name** : string
+    **latitude** : float
+    **longitude** : float
+    **date** : date
+    **state** : string
+}
+object dwd_plants {
+    **<PK> id** : int
+    **kind** = (crops, fruit, wild)
+}
+object dwd_phases {
+    **<PK> id** : int
+    **weight** : int
+}
+object dwd_records {
+    **<FK> station_id** : int
+    **<FK> object_id** : int
+    **<FK> phase_id** : int
+    **date** : date
+}
+
+object dwd_records_cache_fruit {
+    **weight** : float
+    **lon** : float
+    **lat** : float
+    **station** : string
+    **date** : date
+}
+object dwd_records_cache_crops {
+    **weight** : float
+    **lon** : float
+    **lat** : float
+    **station** : string
+    **date** : date
+}
+object dwd_records_cache_wild {
+    **weight** : float
+    **lon** : float
+    **lat** : float
+    **station** : string
+    **date** : date
+}
+
+dwd_phases --> dwd_records : id:phase_id
+dwd_plants --> dwd_records : id:object_id
+dwd_stations --> dwd_records : id:station_id
+
+dwd_records --> dwd_records_cache_crops
+dwd_records --> dwd_records_cache_fruit
+dwd_records --> dwd_records_cache_wild
+
+note top of dwd_records_cache_crops : **WHERE** kind = 'crops'
+note bottom of dwd_records_cache_fruit : **WHERE** kind = 'fruit'
+note top of dwd_records_cache_wild : **WHERE** kind = 'wild'
+
+note as cache_note
+    **AVG**(weight)
+    **GROUP BY** date, station
+end note
+
+cache_note .u. dwd_records_cache_crops
+cache_note .u. dwd_records_cache_fruit
+cache_note .u. dwd_records_cache_wild
+
+@enduml

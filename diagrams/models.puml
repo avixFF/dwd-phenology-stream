@@ -1,0 +1,77 @@
+@startuml diagram
+' skinparam linetype ortho
+
+class Model {
+    # database
+}
+
+class Station {
+    + id
+    + name
+    + latitude
+    + longitude
+    + height
+    + natural_region_group_code
+    + natural_region_group
+    + natural_region_code
+    + natural_region
+    + date
+    + state
+}
+
+class Phase {
+    + id
+    + weight
+}
+
+class PhaseName {
+    + phase_id
+    + name_german
+    + name_english
+}
+
+class Plant {
+    + id
+    + kind
+}
+
+class PlantName {
+    + plant_id
+    + name_german
+    + name_english
+    + name_latin
+}
+
+class Record {
+    + station_id
+    + year
+    + data_quality_bit
+    + object_id
+    + phase_id
+    + date
+    + date_quality_bit
+    + day_of_year
+}
+
+Model <|-- Station
+Model <|-- Phase
+Model <|-- PhaseName
+Model <|-- Plant
+Model <|-- PlantName
+Model <|-- Record
+
+class DwdStream {
+    - loader
+    - stations
+    - phases
+    - plants
+}
+
+DwdStream ---* Station
+DwdStream ---* Phase
+DwdStream ---* PhaseName
+DwdStream ---* Plant
+DwdStream ---* PlantName
+DwdStream ---* Record
+
+@enduml

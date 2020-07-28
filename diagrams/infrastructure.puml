@@ -1,0 +1,23 @@
+@startuml diagram
+
+actor User as user
+database "MySQL database" as db
+node "Grafana" as grafana
+rectangle "nginx reverse proxy" as proxy
+frame "Application" as app {
+    node "Program" as program
+    file "Assets" as assets
+}
+actor "Cron job" as cron
+
+user <--> proxy : Accesses front-end
+
+proxy <-- assets : Serves static files
+proxy <--> grafana : Proxies request
+
+program --> db
+grafana <-- db
+
+cron .. program : Every hour
+
+@enduml
