@@ -18,4 +18,4 @@ RUN pip install --no-cache-dir \
 
 COPY . .
 
-CMD while true; do ./run.sh; sleep 60; done
+CMD while true; do ./run.sh; sleep 600; done
