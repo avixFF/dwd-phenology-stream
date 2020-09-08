@@ -28,7 +28,7 @@ When the `docker-compose up` command is ran, the following steps are performed:
 - Grafana 7.1.5 is installed with provisioned plugins, datasource (linked to installed MySQL) and dashboard for phenological data monitoring
 - nginx reverse proxy for both Grafana & application web assets (in /data directory)
 
-> **IMPORTANT:** To launch application in background mode, run `docker-compose up -d`
+> **NOTICE:** To launch application in background mode, run `docker-compose up -d`
 
 After the application has been spun up, it will be available at http://localhost
 
