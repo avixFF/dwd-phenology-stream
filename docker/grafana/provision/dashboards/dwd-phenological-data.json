@@ -1,0 +1,717 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 2,
+  "iteration": 1599524500431,
+  "links": [],
+  "panels": [
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 18,
+      "options": {
+        "content": "This dashboard renders phenological data from [DWD](https://www.dwd.de).\nPhenological phases are grouped into five categories by assigning a numeric weight to each phase depending on the progress it represents (see legend below).\nPlants are divided into three categories:\n**_crops_** (wheat, oat, potato, etc),\n**_fruit plants_** (cherry, apples, berries, etc) and\n**_wild_** (birch, hazel, etc).\nIn order to narrow the results you can filter by state.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "7.1.0",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  UNIX_TIMESTAMP(<time_column>) as time_sec,\n  <value column> as value,\n  <series name column> as metric\nFROM <table name>\nWHERE $__timeFilter(time_column)\nORDER BY <time_column> ASC\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Description",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "content": "![](http://164.90.181.109/legend.png)",
+      "datasource": "Scientific Project Database",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 2
+      },
+      "id": 11,
+      "mode": "markdown",
+      "options": {
+        "content": "![](/data/legend.png)",
+        "mode": "markdown"
+      },
+      "pluginVersion": "7.1.0",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  UNIX_TIMESTAMP(<time_column>) as time_sec,\n  <value column> as value,\n  <series name column> as metric\nFROM <table name>\nWHERE $__timeFilter(time_column)\nORDER BY <time_column> ASC\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "circleMaxSize": "5",
+      "circleMinSize": "5",
+      "colorInterpolator": {},
+      "colors": [
+        "#5794F2",
+        "#73BF69",
+        "#FADE2A",
+        "rgb(255, 85, 48)",
+        "#B877D9"
+      ],
+      "datasource": "Scientific Project Database",
+      "decimals": 0,
+      "esMetric": "Count",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 15,
+        "w": 8,
+        "x": 0,
+        "y": 4
+      },
+      "hideEmpty": false,
+      "hideZero": false,
+      "id": 15,
+      "initialZoom": "6",
+      "locationData": "table",
+      "mapCenter": "custom",
+      "mapCenterLatitude": "51.5",
+      "mapCenterLongitude": "10.5",
+      "maxDataPoints": 1,
+      "maxPerRow": 3,
+      "mouseWheelZoom": false,
+      "pluginVersion": "7.0.6",
+      "repeat": null,
+      "repeatDirection": "h",
+      "showLegend": false,
+      "sizeInterpolator": {},
+      "stickyLabels": false,
+      "tableQueryOptions": {
+        "geohashField": "geohash",
+        "labelField": "title",
+        "latitudeField": "lat",
+        "longitudeField": "lon",
+        "metricField": "metric",
+        "queryType": "coordinates"
+      },
+      "targets": [
+        {
+          "datasource": "Scientific Project Database",
+          "format": "table",
+          "group": [],
+          "metricColumn": "weight",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  date AS \"time\",\n  weight AS metric,\n  lon,\n  lat,\n  station AS \"title\"\nFROM dwd_records_cache_crops\nWHERE\n  $__timeFilter(date) AND\n  state IN($states)\nORDER BY date",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "lon"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "lat"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "state"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "dwd_phenology_view_fruits",
+          "timeColumn": "date",
+          "timeColumnType": "date",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,2,3,4",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Crops",
+      "type": "grafana-worldmap-panel",
+      "unitPlural": "",
+      "unitSingle": "",
+      "unitSingular": "",
+      "valueName": "total"
+    },
+    {
+      "circleMaxSize": "5",
+      "circleMinSize": "5",
+      "colorInterpolator": {},
+      "colors": [
+        "#5794F2",
+        "#73BF69",
+        "#FADE2A",
+        "rgb(255, 85, 48)",
+        "#B877D9"
+      ],
+      "datasource": "Scientific Project Database",
+      "decimals": 0,
+      "esMetric": "Count",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 15,
+        "w": 8,
+        "x": 8,
+        "y": 4
+      },
+      "hideEmpty": false,
+      "hideZero": false,
+      "id": 2,
+      "initialZoom": "6",
+      "locationData": "table",
+      "mapCenter": "custom",
+      "mapCenterLatitude": "51.5",
+      "mapCenterLongitude": "10.5",
+      "maxDataPoints": 1,
+      "mouseWheelZoom": false,
+      "pluginVersion": "7.0.6",
+      "showLegend": false,
+      "sizeInterpolator": {},
+      "stickyLabels": false,
+      "tableQueryOptions": {
+        "geohashField": "geohash",
+        "labelField": "title",
+        "latitudeField": "lat",
+        "longitudeField": "lon",
+        "metricField": "metric",
+        "queryType": "coordinates"
+      },
+      "targets": [
+        {
+          "datasource": "Scientific Project Database",
+          "format": "table",
+          "group": [],
+          "metricColumn": "weight",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  date AS \"time\",\n  weight AS metric,\n  lon,\n  lat,\n  station AS \"title\"\nFROM dwd_records_cache_fruits\nWHERE\n  $__timeFilter(date) AND\n  state IN($states)\nORDER BY date",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "lon"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "lat"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "state"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "dwd_phenology_view_fruits",
+          "timeColumn": "date",
+          "timeColumnType": "date",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,2,3,4",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Fruits",
+      "type": "grafana-worldmap-panel",
+      "unitPlural": "",
+      "unitSingle": "",
+      "unitSingular": "",
+      "valueName": "total"
+    },
+    {
+      "circleMaxSize": "5",
+      "circleMinSize": "5",
+      "colorInterpolator": {},
+      "colors": [
+        "#5794F2",
+        "#73BF69",
+        "#FADE2A",
+        "rgb(255, 85, 48)",
+        "#B877D9"
+      ],
+      "datasource": "Scientific Project Database",
+      "decimals": 0,
+      "esMetric": "Count",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 15,
+        "w": 8,
+        "x": 16,
+        "y": 4
+      },
+      "hideEmpty": false,
+      "hideZero": false,
+      "id": 16,
+      "initialZoom": "6",
+      "locationData": "table",
+      "mapCenter": "custom",
+      "mapCenterLatitude": "51.5",
+      "mapCenterLongitude": "10.5",
+      "maxDataPoints": 1,
+      "mouseWheelZoom": false,
+      "pluginVersion": "7.0.6",
+      "showLegend": false,
+      "sizeInterpolator": {},
+      "stickyLabels": false,
+      "tableQueryOptions": {
+        "geohashField": "geohash",
+        "labelField": "title",
+        "latitudeField": "lat",
+        "longitudeField": "lon",
+        "metricField": "metric",
+        "queryType": "coordinates"
+      },
+      "targets": [
+        {
+          "datasource": "Scientific Project Database",
+          "format": "table",
+          "group": [],
+          "metricColumn": "weight",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  date AS \"time\",\n  weight AS metric,\n  lon,\n  lat,\n  station AS \"title\"\nFROM dwd_records_cache_wild\nWHERE\n  $__timeFilter(date) AND\n  state IN($states)\nORDER BY date",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "lon"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "lat"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "state"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "dwd_phenology_view_fruits",
+          "timeColumn": "date",
+          "timeColumnType": "date",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": "0,2,3,4",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Wild",
+      "type": "grafana-worldmap-panel",
+      "unitPlural": "",
+      "unitSingle": "",
+      "unitSingular": "",
+      "valueName": "total"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 19
+      },
+      "id": 20,
+      "options": {
+        "content": "",
+        "mode": "markdown"
+      },
+      "pluginVersion": "7.1.0",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  UNIX_TIMESTAMP(<time_column>) as time_sec,\n  <value column> as value,\n  <series name column> as metric\nFROM <table name>\nWHERE $__timeFilter(time_column)\nORDER BY <time_column> ASC\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 30,
+        "w": 7,
+        "x": 0,
+        "y": 20
+      },
+      "id": 22,
+      "options": {
+        "content": "| Color                 | Name                                     |\n|:---------------------:|------------------------------------------|\n| ![](/data/blue.png)   | first cut for hay                        |\n| ![](/data/blue.png)   | autumn needle fall                       |\n| ![](/data/blue.png)   | autumn colouring of needles              |\n| ![](/data/blue.png)   | autumn leave fall                        |\n| ![](/data/blue.png)   | autumn colouring of leaves               |\n| ![](/data/blue.png)   | second cut for silage                    |\n| ![](/data/blue.png)   | second cut for hay                       |\n| ![](/data/blue.png)   | first cut for silage                     |\n| ![](/data/green.png)  | beginning of turning green               |\n| ![](/data/green.png)  | beginning of may sprouting               |\n| ![](/data/green.png)  | beginning of unfoalding of leaves        |\n| ![](/data/green.png)  | first bleeding of the vines              |\n| ![](/data/green.png)  | sprouting of leaves                      |\n| ![](/data/yellow.png) | general flowering                        |\n| ![](/data/yellow.png) | beginning of emergence                   |\n| ![](/data/yellow.png) | beginning of tilling sowing drilling     |\n| ![](/data/yellow.png) | beginning of flowering                   |\n| ![](/data/orange.png) | tip of tassel visible                    |\n| ![](/data/orange.png) | end of flowering in the observation area |\n| ![](/data/orange.png) | beginning tassel emergence               |\n| ![](/data/orange.png) | beginning of growth in height            |\n| ![](/data/orange.png) | end of flowering                         |\n| ![](/data/orange.png) | yellow ripeness                          |\n| ![](/data/orange.png) | beginning of heading                     |\n| ![](/data/purple.png) | fruit ripe for picking                   |\n| ![](/data/purple.png) | harvest                                  |\n| ![](/data/purple.png) | grape harvest                            |",
+        "mode": "markdown"
+      },
+      "pluginVersion": "7.1.0",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  UNIX_TIMESTAMP(<time_column>) as time_sec,\n  <value column> as value,\n  <series name column> as metric\nFROM <table name>\nWHERE $__timeFilter(time_column)\nORDER BY <time_column> ASC\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "DWD phase decoding",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 50
+      },
+      "id": 23,
+      "options": {
+        "content": "",
+        "mode": "markdown"
+      },
+      "pluginVersion": "7.1.0",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  UNIX_TIMESTAMP(<time_column>) as time_sec,\n  <value column> as value,\n  <series name column> as metric\nFROM <table name>\nWHERE $__timeFilter(time_column)\nORDER BY <time_column> ASC\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 26,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "Scientific Project Database",
+        "definition": "select distinct state from dwd_stations",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Filter by state",
+        "multi": true,
+        "name": "states",
+        "options": [],
+        "query": "select distinct state from dwd_stations",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 5,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-7d",
+    "to": "now"
+  },
+  "timepicker": {
+    "hidden": false,
+    "refresh_intervals": [
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "DWD Phenological Data",
+  "uid": "SUfQsNkGz",
+  "version": 49
+}
