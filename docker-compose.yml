@@ -2,9 +2,7 @@ version: "3.7"
 
 services:
     app:
-        build:
-            context: .
-            dockerfile: ./docker/app/Dockerfile
+        image: lexuzieel/dwd-phenology-stream-app:latest
         working_dir: /app
         # Wait for the database connection & run app every 10 minutes
         command: >
