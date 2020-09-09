@@ -3,7 +3,7 @@
 # Running in Docker
 
 The application is ready to be run in containers by simply ivoking `docker-compose up` command.
-Of course, this assumes you have docker installed and ready on your machine.
+Of course, this assumes you have `docker` and `docker-compose` installed on your machine.
 
 The application is designed to automatically fetch data from DWD repository every 10 minutes:
 
