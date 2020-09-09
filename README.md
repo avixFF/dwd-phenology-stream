@@ -2,10 +2,10 @@
 
 # Running in Docker
 
-The application is ready to be run in containers by simply ivoking `docker-compose up` command.
+The application is ready to be run in containers by simply invoking `docker-compose up` command.
 Of course, this assumes you have `docker` and `docker-compose` installed on your machine.
 
-The application is designed to automatically fetch data from DWD repository every 10 minutes:
+The application is set up to automatically fetch data from DWD repository every 10 minutes:
 
 ```
 app_1       | Updated: Stations
@@ -28,7 +28,7 @@ When the `docker-compose up` command is ran, the following steps are performed:
 - Grafana 7.1.5 is installed with provisioned plugins, datasource (linked to installed MySQL) and dashboard for phenological data monitoring
 - nginx reverse proxy for both Grafana & application web assets (in /data directory)
 
-> **IMPORTANT:** To launch application in background mode, run `docker-compose up -d`
+> **NOTICE:** To launch application in background mode, run `docker-compose up -d`
 
 It is possible to define custom web server port by providing NGINX_PORT environment variable:
 
