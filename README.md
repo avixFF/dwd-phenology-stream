@@ -30,7 +30,13 @@ When the `docker-compose up` command is ran, the following steps are performed:
 
 > **IMPORTANT:** To launch application in background mode, run `docker-compose up -d`
 
-After the application has been spun up, it will be available at http://localhost
+It is possible to define custom web server port by providing NGINX_PORT environment variable:
+
+```
+$ NGINX_PORT=8080 docker-compose up -d
+```
+
+After the application has been spun up, it will be available at http://localhost:{NGINX_PORT}
 
 First step that you must take for the dashboard setup is to login with an adminsitrator account (login: admin, password: admin - password change is requested upon first login).
 

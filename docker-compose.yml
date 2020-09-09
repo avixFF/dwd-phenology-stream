@@ -36,6 +36,8 @@ services:
             GF_INSTALL_PLUGINS: grafana-worldmap-panel
     nginx:
         image: nginx:1.19.2-alpine
+        ports:
+            - ${NGINX_PORT:-80}:80
         volumes:
             - ./docker/nginx/templates:/etc/nginx/templates:ro
             - ./data:/usr/share/nginx/html:ro
