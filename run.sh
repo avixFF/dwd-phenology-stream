@@ -1,7 +1,6 @@
 #!/bin/bash
 
 script_dir=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
-pipenv=/usr/local/bin/pipenv
 
 cd "$script_dir"
 
@@ -10,10 +9,21 @@ if [ -f .env ]; then
     export $(egrep -v '^#' .env | xargs)
 fi
 
+if [ -f .run.lock ]; then
+    exit
+fi
+
+touch .run.lock
+
+if [ ! -f .init ]; then
+    python . --migrate database.migrations.dwd.CreateTables
+    mysql -u $MYSQL_USERNAME $MYSQL_DATABASE < "$script_dir/database/dwd/weights.sql"
+    touch .init
+fi
+
 echo "Ran on $(date)"
 
-$pipenv install
-$pipenv run python .
+python .
 
 echo "Generating cache..."
 
@@ -24,3 +34,5 @@ else
 fi
 
 echo "Done"
+
+rm -f .run.lock

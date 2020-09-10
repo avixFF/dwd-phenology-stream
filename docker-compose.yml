@@ -1,0 +1,47 @@
+version: "3.7"
+
+services:
+    app:
+        image: lexuzieel/dwd-phenology-stream-app:latest
+        working_dir: /app
+        # Wait for the database connection & run app every 10 minutes
+        command: >
+            bash -c "./wait-for-it.sh -t 600 database:3306 --
+                     while true; do ./run.sh; sleep 600; done"
+        environment:
+            MYSQL_DATABASE: app
+            MYSQL_HOST: database
+            MYSQL_PORT: 3306
+            MYSQL_USERNAME: root
+            MYSQL_PASSWORD:
+
+            MYSQL_BACKUP_USER: root
+            MYSQL_BACKUP_HOST: localhost
+            MYSQL_BACKUP_USERNAME: root
+            MYSQL_BACKUP_PASSWORD:
+    database:
+        image: mysql:5.7
+        volumes:
+            - mysql-data:/var/lib/mysql/
+        environment:
+            MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+            MYSQL_DATABASE: app
+    grafana:
+        image: grafana/grafana:7.1.5
+        volumes:
+            - ./docker/grafana/provision/:/etc/grafana/provisioning/
+        environment:
+            GF_USERS_ALLOW_SIGN_UP: "false"
+            GF_AUTH_ANONYMOUS_ENABLED: "yes"
+            GF_INSTALL_PLUGINS: grafana-worldmap-panel
+    nginx:
+        image: nginx:1.19.2-alpine
+        ports:
+            - ${NGINX_PORT:-80}:80
+        volumes:
+            - ./docker/nginx/templates:/etc/nginx/templates:ro
+            - ./data:/usr/share/nginx/html:ro
+
+volumes:
+    mysql-data:
+        driver: local

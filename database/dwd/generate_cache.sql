@@ -5,7 +5,6 @@ create table dwd_records_cache_fruits
     key `lat` (`lat`),
     key `lon` (`lon`),
     key `station` (`station`),
-    key `state` (`state`),
     key `date` (`date`)
 )
 select avg(dwd_phases.weight)                                    as "weight",
@@ -28,7 +27,6 @@ create table dwd_records_cache_crops
     key `lat` (`lat`),
     key `lon` (`lon`),
     key `station` (`station`),
-    key `state` (`state`),
     key `date` (`date`)
 )
 select avg(dwd_phases.weight)                                    as "weight",
@@ -51,7 +49,6 @@ create table dwd_records_cache_wild
     key `lat` (`lat`),
     key `lon` (`lon`),
     key `station` (`station`),
-    key `state` (`state`),
     key `date` (`date`)
 )
 select avg(dwd_phases.weight)                                    as "weight",
