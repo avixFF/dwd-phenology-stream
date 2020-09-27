@@ -4,12 +4,15 @@ script_dir=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
 
 cd "$script_dir"
 
+echo "Ran on $(date)"
+
 # import .env
 if [ -f .env ]; then
     export $(egrep -v '^#' .env | xargs)
 fi
 
 if [ -f .run.lock ]; then
+    echo "Run lock exists - stopping here"
     exit
 fi
 
@@ -20,8 +23,6 @@ if [ ! -f .init ]; then
     mysql -u $MYSQL_USERNAME $MYSQL_DATABASE < "$script_dir/database/dwd/weights.sql"
     touch .init
 fi
-
-echo "Ran on $(date)"
 
 python .
 
