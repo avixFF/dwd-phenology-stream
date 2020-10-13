@@ -1,0 +1,11 @@
+version: "3.7"
+
+services:
+    app:
+        restart: always
+    database:
+        restart: always
+    grafana:
+        restart: always
+    nginx:
+        restart: always
