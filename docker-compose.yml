@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
     app:
-        image: lexuzieel/dwd-phenology-stream-app:latest
+        image: lexuzieel/dwd-phenology-stream-app:v2
         working_dir: /app
         # Wait for the database connection & run app every 10 minutes
         command: >
