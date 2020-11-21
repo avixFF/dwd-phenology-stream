@@ -81,7 +81,7 @@ class CsvLoader(Loader):
             if self._eor_mode:
                 content = re.sub(rf'\s*{self._delimiter}\s*',
                                  self._delimiter, content)
-                content = re.sub(f'{self._delimiter}eor{self._delimiter}',
+                content = re.sub(rf'{self._delimiter}eor{self._delimiter}+',
                                  '\n', content)
 
                 stream = StringIO(content)
